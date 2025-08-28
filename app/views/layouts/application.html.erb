@@ -1,52 +1,41 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Pragprog Books Online Store </title>
-    <title><%= content_for(:title) || "Depot" %></title>
+    <title><%= content_for(:title) || "Pragprog Books Online Store" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-   <header class="bg-green-700">
-  <%= image_tag 'logo.svg', alt: 'The Pragmatic Bookshelf' %>
-  <h1><%= @page_title %></h1>
-</header>
+    <header class="bg-green-700 p-4 flex items-center gap-4">
+      <%= image_tag 'logo.svg', alt: 'The Pragmatic Bookshelf', class: 'h-12' %>
+      <h1 class="text-white text-2xl font-bold"><%= @page_title || "Depot" %></h1>
+    </header>
 
-<section class="flex">
-  <% if @cart and not @cart.line_items.empty? %>
-  <nav class="bg-green-900 p-6">
-    <div id="cart" class="bg-white rounded p-2">
-      <%= render @cart %>
-    </div>
-    <% end %>
-    <ul class="text-gray-300 leading-8">
-      <li><a href="/">Home</a></li>
-      <li><a href="/questions">Questions</a></li>
-      <li><a href="/news">News</a></li>
-      <li><a href="/contact">Contact</a></li>
-    </ul>
-  </nav>
+    <section class="flex mt-4">
+      <nav class="bg-green-900 p-6 w-64 text-gray-300">
+        <% if @cart&.line_items&.any? %>
+          <div id="cart" class="bg-white rounded p-2 mb-4">
+            <%= render @cart %>
+          </div>
+        <% end %>
 
-  <main class="container mx-auto mt-4 px-5 flex">
-    <%= yield %>
-  </main>
-</section>
-</body>
+        <ul class="space-y-2">
+          <li><a href="/" class="hover:underline">Home</a></li>
+          <li><a href="/questions" class="hover:underline">Questions</a></li>
+          <li><a href="/news" class="hover:underline">News</a></li>
+          <li><a href="/contact" class="hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+
+      <main class="flex-1 container mx-auto px-5">
+        <%= yield %>
+      </main>
+    </section>
+  </body>
 </html>

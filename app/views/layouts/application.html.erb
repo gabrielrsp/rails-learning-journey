@@ -18,12 +18,8 @@
     </header>
 
     <section class="flex mt-4">
-      <nav class="bg-green-900 p-6 w-64 text-gray-300">
-        <% if @cart&.line_items&.any? %>
-          <div id="cart" class="bg-white rounded p-2 mb-4">
-            <%= render @cart %>
-          </div>
-        <% end %>
+      <nav class="bg-green-900 p-6 w-64 text-gray-100">
+        <%= render partial: 'layouts/cart', locals: {cart:@cart} %>
 
         <ul class="space-y-2">
           <li><a href="/" class="hover:underline">Home</a></li>

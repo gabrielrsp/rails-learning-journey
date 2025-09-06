@@ -1,0 +1,12 @@
+@keyframes line-item-highlight {
+  0% {
+    background: #8f8; /* começa com verde claro */
+  }
+  100% {
+    background: none; /* termina transparente */
+  }
+}
+
+.line-item-highlight {
+  animation: line-item-highlight 1s; /* aplica a animação em 1 segundo */
+}

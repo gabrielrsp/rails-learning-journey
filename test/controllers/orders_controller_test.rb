@@ -3,6 +3,15 @@ require "test_helper"
 class OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @order = orders(:one)
+    # Garante que o carrinho esteja limpo no início de cada teste
+    Cart.destroy_all
+  end
+
+  test "requires item in cart" do
+    # Tenta acessar new_order sem itens no carrinho
+    get new_order_url
+    assert_redirected_to store_index_path
+    assert_equal "Your cart is empty", flash[:notice]
   end
 
   test "should get index" do
@@ -11,11 +20,17 @@ class OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
+    # Adiciona um item ao carrinho para permitir criar pedido
+    post line_items_url, params: { product_id: products(:ruby).id }
+
     get new_order_url
     assert_response :success
   end
 
   test "should create order" do
+    # Adiciona item ao carrinho antes de criar pedido
+    post line_items_url, params: { product_id: products(:ruby).id }
+
     assert_difference("Order.count") do
       post orders_url, params: { order: { address: @order.address, email: @order.email, name: @order.name, pay_type: @order.pay_type } }
     end
